@@ -1,0 +1,7 @@
+{
+  "name": "grocit-v1",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
