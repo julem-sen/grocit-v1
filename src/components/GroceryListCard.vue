@@ -23,7 +23,7 @@
     <div class="progress-track">
       <div class="progress-fill" :style="checkedProgressStyle" />
       <div class="progress-center-text">
-        {{ checkedTotalNum > 0 ? `₱${checkedTotal} in cart` : 'No fulfilled items yet' }}
+        {{ checkedTotalNum > 0 ? `₱${checkedTotal} spent` : 'No fulfilled items yet' }}
       </div>
     </div>
 

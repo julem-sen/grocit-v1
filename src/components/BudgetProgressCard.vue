@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <p v-if="isOverBudget" class="over-limit-label">
+    <p v-if="isOverBudget && checkedTotal > budget" class="over-limit-label">
       +₱{{ (checkedTotal - budget).toFixed(2) }} over limit
     </p>
 
@@ -104,10 +104,12 @@ const progressStyle = computed(() => calcProgressStyle(progress.value))
   justify-content: center;
   font-size: 0.72rem;
   font-weight: 700;
-  color: white;
-  mix-blend-mode: difference; /* stays readable on both light and dark backgrounds */
+  color: #333;
   pointer-events: none;
   white-space: nowrap;
+  text-shadow:
+    0 0 4px rgba(255,255,255,0.9),
+    0 0 8px rgba(255,255,255,0.7);
 }
 .over-limit-label { font-size: 0.72rem; color: var(--ion-color-danger); font-weight: 600; text-align: right; margin: 4px 0 0; }
 .check-summary { font-size: 0.72rem; color: #aaa; text-align: right; margin: 5px 0 0; }
