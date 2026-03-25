@@ -11,6 +11,7 @@ export const useGroceryStore = defineStore('grocery', {
     items: [] as GroceryItem[],
     selectedList: null as GroceryList | null,
     listTotals: {} as Record<string, number>,
+    listCheckedTotals: {} as Record<string, number>,
     loading: false,
     error: null as string | null
   }),
@@ -20,12 +21,14 @@ export const useGroceryStore = defineStore('grocery', {
       this.loading = true
       this.error = null
       try {
-        const [lists, totals] = await Promise.all([
+        const [lists, totals, checkedTotals] = await Promise.all([
           service.getLists(),
-          service.getAllTotals()
+          service.getAllTotals(),
+          service.getAllCheckedTotals()
         ])
         this.lists = lists
         this.listTotals = totals
+        this.listCheckedTotals = checkedTotals
       } catch (e: any) {
         this.error = e.message
         throw e
@@ -86,6 +89,9 @@ export const useGroceryStore = defineStore('grocery', {
         this.listTotals[id] = details.items.reduce(
           (sum: number, i: GroceryItem) => sum + i.price * i.quantity, 0
         )
+        this.listCheckedTotals[id] = details.items
+          .filter((i: GroceryItem) => i.is_checked)
+          .reduce((sum: number, i: GroceryItem) => sum + i.price * i.quantity, 0)
       } catch (e: any) {
         this.error = e.message
         throw e

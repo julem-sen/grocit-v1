@@ -53,6 +53,22 @@ export class GroceryRepository {
     }
   }
 
+  async getAllCheckedTotals() {
+    if (isWeb) return mock!.getAllCheckedTotals()
+    try {
+      const db = this.getDB()
+      const res = await db.query(`
+        SELECT list_id, SUM(price * quantity) as total
+        FROM grocery_items
+        WHERE is_checked = 1
+        GROUP BY list_id
+      `)
+      return res.values || []
+    } catch (e: any) {
+      throw new Error(`Failed to fetch checked totals: ${e.message}`)
+    }
+  }
+
   async updateList(id: string, name: string, budget: number) {
     if (isWeb) return mock!.updateList(id, name, budget)
     try {

@@ -30,3 +30,7 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+release-key.keystore
+/android
+/android/app/build.gradle
+/android/app/capacitor.build.gradle

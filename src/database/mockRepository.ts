@@ -56,4 +56,12 @@ export class MockRepository {
     })
     return Object.entries(totalsMap).map(([list_id, total]) => ({ list_id, total }))
   }
+
+  async getAllCheckedTotals() {
+    const totalsMap: Record<string, number> = {}
+    items.filter(i => i.is_checked).forEach(item => {
+      totalsMap[item.list_id] = (totalsMap[item.list_id] || 0) + item.price * item.quantity
+    })
+    return Object.entries(totalsMap).map(([list_id, total]) => ({ list_id, total }))
+  }
 }

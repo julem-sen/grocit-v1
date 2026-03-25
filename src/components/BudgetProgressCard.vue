@@ -12,9 +12,9 @@
 
     <div class="budget-top-row">
       <div>
-        <p class="budget-meta-label">REMAINING</p>
-        <p class="budget-big-number" :class="{ 'number-danger': isOverBudget }">
-          ₱{{ remaining.toFixed(2) }}
+        <p class="budget-meta-label">LIST TOTAL</p>
+        <p class="budget-big-number">
+          ₱{{ total.toFixed(2) }}
         </p>
       </div>
       <div class="text-right">
@@ -25,14 +25,14 @@
 
     <div class="custom-progress-track">
       <div class="custom-progress-fill" :style="progressStyle">
-        <span class="progress-inner-text" v-if="progress > 12">
-          ₱{{ total.toFixed(2) }} Spent
-        </span>
+        <div class="progress-center-text">
+          ₱{{ checkedTotal.toFixed(2) }} Spent
+        </div>
       </div>
     </div>
 
     <p v-if="isOverBudget" class="over-limit-label">
-      +₱{{ (total - budget).toFixed(2) }} over limit
+      +₱{{ (checkedTotal - budget).toFixed(2) }} over limit
     </p>
 
     <p class="check-summary">{{ checkedCount }} of {{ itemCount }} items in cart</p>
@@ -47,15 +47,16 @@ import { calcProgressStyle } from '@/utils/budgetUtils'
 
 const props = defineProps<{
   total: number
+  checkedTotal: number
   budget: number
   checkedCount: number
   itemCount: number
   isCompleted: boolean
 }>()
 
-const remaining = computed(() => Math.max(props.budget - props.total, 0))
-const isOverBudget = computed(() => props.total > props.budget)
-const progress = computed(() => props.budget > 0 ? Math.min((props.total / props.budget) * 100, 100) : 0)
+//const remaining = computed(() => Math.max(props.budget - props.checkedTotal, 0))
+const isOverBudget = computed(() => props.checkedTotal > props.budget)
+const progress = computed(() => props.budget > 0 ? Math.min((props.checkedTotal / props.budget) * 100, 100) : 0)
 const progressStyle = computed(() => calcProgressStyle(progress.value))
 </script>
 
@@ -77,17 +78,48 @@ const progressStyle = computed(() => calcProgressStyle(progress.value))
 .number-muted  { color: #999; font-size: 1.3rem; }
 .text-right    { text-align: right; }
 .custom-progress-track {
-  width: 100%; height: 26px; background: #ececec;
-  border-radius: 999px; overflow: hidden;
+  width: 100%;
+  height: 26px;
+  background: #ececec;
+  border-radius: 999px;
+  overflow: hidden;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
+  position: relative; /* ← needed for overlay text */
 }
 .custom-progress-fill {
-  height: 100%; border-radius: 999px;
-  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-  display: flex; align-items: center; justify-content: flex-end;
-  padding-right: 10px; min-width: 0;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
 }
 .progress-inner-text { font-size: 0.72rem; font-weight: 700; color: white; white-space: nowrap; }
+.progress-center-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: white;
+  mix-blend-mode: difference; /* stays readable on both light and dark backgrounds */
+  pointer-events: none;
+  white-space: nowrap;
+}
 .over-limit-label { font-size: 0.72rem; color: var(--ion-color-danger); font-weight: 600; text-align: right; margin: 4px 0 0; }
 .check-summary { font-size: 0.72rem; color: #aaa; text-align: right; margin: 5px 0 0; }
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+.total-summary {
+  font-size: 0.72rem;
+  color: #aaa;
+  font-style: italic;
+  margin: 0;
+}
 </style>

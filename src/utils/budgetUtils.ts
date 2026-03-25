@@ -1,4 +1,11 @@
+import { GroceryItem } from '@/models/GroceryItem'
 import { GroceryList } from '@/models/GroceryList'
+
+export const calculateTotal = (items: GroceryItem[]) =>
+  items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+
+export const calculateCheckedTotal = (items: GroceryItem[]) =>
+  items.filter(i => i.is_checked).reduce((sum, i) => sum + i.price * i.quantity, 0)
 
 export const getSpent = (list: GroceryList, listTotals: Record<string, number>) =>
   listTotals[list.id] || 0

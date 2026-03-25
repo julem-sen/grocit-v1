@@ -23,6 +23,14 @@ export class GroceryService {
     }, {})
   }
 
+  async getAllCheckedTotals(): Promise<Record<string, number>> {
+    const rows = await this.repo.getAllCheckedTotals()
+    return rows.reduce((map: Record<string, number>, row: any) => {
+      map[row.list_id] = row.total || 0
+      return map
+    }, {})
+  }
+
   async updateList(id: string, name: string, budget: number) {
     if (!id) throw new Error('List ID is required')
     if (!name?.trim()) throw new Error('List name is required')

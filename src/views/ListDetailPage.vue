@@ -16,6 +16,7 @@
       <div class="fixed-top">
         <BudgetProgressCard
           :total="total"
+          :checkedTotal="checkedTotal"
           :budget="store.selectedList?.budget || 0"
           :checkedCount="checkedCount"
           :itemCount="store.items.length"
@@ -99,6 +100,7 @@ import AddEditItemModal from '@/components/AddEditItemModal.vue'
 import EditListModal from '@/components/EditListModal.vue'
 import CompleteBar from '@/components/CompleteBar.vue'
 import router from '@/router'
+import { calculateCheckedTotal } from '@/utils/budgetUtils'
 
 const store = useGroceryStore()
 const service = new GroceryService()
@@ -112,6 +114,7 @@ const editForm = reactive({ name: '', price: 0, qty: 1 })
 const isCompleted = computed(() => !!store.selectedList?.is_completed)
 const total = computed(() => service.calculateTotal(store.items))
 const checkedCount = computed(() => store.items.filter(i => i.is_checked).length)
+const checkedTotal = computed(() => calculateCheckedTotal(store.items))
 
 watch(isCompleted, (val) => { if (val) router.replace('/home') })
 

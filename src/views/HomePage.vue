@@ -19,6 +19,7 @@
           :key="list.id"
           :list="list"
           :listTotals="store.listTotals"
+          :listCheckedTotals="store.listCheckedTotals"
           @open="openList(list)"
           @delete="remove(list.id)"
         />
@@ -39,6 +40,7 @@
           :key="list.id"
           :list="list"
           :listTotals="store.listTotals"
+          :listCheckedTotals="store.listCheckedTotals"
           @open="openList(list)"
           @delete="remove(list.id)"
         />
