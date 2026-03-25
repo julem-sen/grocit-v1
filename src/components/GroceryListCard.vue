@@ -97,8 +97,10 @@ const checkedProgressStyle = computed(() => calcProgressStyle(checkedPct.value))
   top: 0; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.68rem; font-weight: 700;
-  color: white;
-  mix-blend-mode: difference;
+  color: #383838;
+ text-shadow:
+    0 0 4px rgba(255,255,255,0.9),
+    0 0 8px rgba(255,255,255,0.7);
   pointer-events: none;
   white-space: nowrap;
 }
